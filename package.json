@@ -1,0 +1,24 @@
+{
+  "name": "expressjs-socketio-boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "latest",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.16.3",
+    "express-session": "^1.17.0",
+    "mongoose": "^5.9.2",
+    "node-fetch": "^2.2.0",
+    "passport": "latest",
+    "passport-local": "latest",
+    "socket.io": "^2.3.0"
+  }
+}
