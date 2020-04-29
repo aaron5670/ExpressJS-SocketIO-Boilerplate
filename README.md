@@ -11,7 +11,6 @@ Simple Express.js & Socket.io Boilerplate.
   - Register endpoint
   - Username availability check endpoint
   - Logout endpoint
-- [x] Bcrypt.js
 - [x] Socket.io integration for real-time, bidirectional and event-based communication.
 - [ ] Social login / register integration.
 
