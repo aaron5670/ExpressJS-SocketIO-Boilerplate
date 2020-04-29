@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
-require('./database/model/users');
-const db = mongoose.connection;
-const Users = mongoose.model('Users');
 const srvConfig = require('./config');
+const db = mongoose.connection;
+const {CONNECTION_TYPE, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_PORT, DB_NAME, DB_QUERY_PARAMS} = srvConfig;
+const dbAuthString = (DB_USERNAME && DB_PASSWORD) ? `${srvConfig.DB_USERNAME}:${srvConfig.DB_PASSWORD}@` : '';
+require('./database/model/users');
+const Users = mongoose.model('Users');
 
-mongoose.connect(`mongodb+srv://${srvConfig.DB_USERNAME}:${srvConfig.DB_PASSWORD}@${srvConfig.DB_HOST}/${srvConfig.DB_NAME}${srvConfig.DB_QUERY_PARAMS}`, {
+mongoose.connect(`${CONNECTION_TYPE}://${dbAuthString}${DB_HOST}:${DB_PORT}/${DB_NAME}${DB_QUERY_PARAMS}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
@@ -12,6 +14,7 @@ mongoose.connect(`mongodb+srv://${srvConfig.DB_USERNAME}:${srvConfig.DB_PASSWORD
 }).catch(err => {
     console.log(err);
 }).then(() => {
+    console.log('Database successfully seeded!')
     db.close();
 });
 
@@ -21,12 +24,12 @@ async function seedUsers() {
         {
             "name": "John Doe",
             "username": "john",
-            "password": "password123"
+            "password": "$2a$10$KPtehsbArEr3XlIbNOOHOu7/N4s6ha31ZZ2jDngQ.jvFToDs5mNdO" //password123
         },
         {
             "name": "Jane Roe",
             "username": "jane",
-            "password": "securePassword1"
+            "password": "$2a$10$M8R.EalzDPC.ZNz4K.SqMO87KQp0Paq3Qv9xyTG6LHJobNyViWFHi" //securepassword1
         },
     ])
 }
