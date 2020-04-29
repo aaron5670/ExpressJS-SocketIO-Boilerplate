@@ -4,7 +4,7 @@ Simple Express.js & Socket.io Boilerplate.
 
 ## ✨ Features
 
-- [x] Express 5.7
+- [x] Express 4.16
 - [x] Mongoose 5.7
 - [x] Passport.js with Bcrypt.js
   - Login endpoint
