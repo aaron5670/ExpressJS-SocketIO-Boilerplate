@@ -50,31 +50,32 @@ authRouter.post('/login',
     })
 );
 
+/**
+ * Username availability check
+ * ToDo: Create a middleware for this section (if possible)
+ */
+authRouter.get('/username-availability', async (req, res) => {
+    let username = req.query.username;
+    if (!username || username === '') return res.json({
+        error: true,
+        message: 'Username can\'t be empty!'
+    });
+
+    return Users.findOne({username: username}, function (err, user) {
+            if (err) return res.json({
+                error: true
+            });
+
+            return res.json({
+                usernameAlreadyInUsage: (!!user),
+            });
+        }
+    );
+
+});
+
 authRouter.post('/register', async (req, res) => {
-    let usernameCheck = req.query.usernameCheck;
     let {name, username, password} = req.body;
-
-    /**
-     * Username availability check
-     * ToDo: Create a middleware for this section
-     */
-    if (usernameCheck) {
-        if (username === '') return res.json({
-            error: true,
-            message: 'Username can\'t be empty!'
-        });
-
-        return Users.findOne({username: username}, function (err, user) {
-                if (err) return res.json({
-                    error: true
-                });
-
-                return res.json({
-                    usernameAlreadyInUsage: (!!user),
-                });
-            }
-        );
-    }
 
     if (!name || !username || !password) return res.json({
         success: false,
@@ -112,7 +113,7 @@ authRouter.get('/success-url', authenticationMiddleware(), (req, res) => {
 });
 
 authRouter.get('/login-failed', (req, res) => {
-    res.json({
+    res.status(401).json({
         success: false,
         message: req.flash('error')[0]
     });
@@ -120,7 +121,9 @@ authRouter.get('/login-failed', (req, res) => {
 
 authRouter.get('/logout', function (req, res) {
     req.logout();
-    res.redirect('/login');
+    res.json({
+        success: true
+    });
 });
 
 module.exports = authRouter;
