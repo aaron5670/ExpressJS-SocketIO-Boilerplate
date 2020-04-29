@@ -1,7 +1,38 @@
-# ExpressJS-SocketIO-Boilerplate
-Simple Express.JS, SocketIO Boilerplate
+# 📦 ExpressJS-SocketIO-Boilerplate
+Simple Express.js & Socket.io Boilerplate.
 
-### Endpoints
+
+## ✨ Features
+
+- [x] Express 5.7
+- [x] Mongoose 5.7
+- [x] Passport.js with Bcrypt.js
+  - Login endpoint
+  - Register endpoint
+  - Username availability check endpoint
+  - Logout endpoint
+- [x] Bcrypt.js
+- [x] Socket.io integration for real-time, bidirectional and event-based communication.
+- [ ] Social login / register integration.
+
+
+## 📝 Getting Started
+
+```
+git clone https://github.com/aaron5670/ExpressJS-SocketIO-Boilerplate.git
+
+cd expressjs-socketio-boilerplate
+
+npm install
+
+// Optional: if you want dummy data, then run this seed file
+node seed.js
+
+node server.js
+```
+
+
+## 🚀 Endpoints
 The following endpoints are available
 
 #### Login
