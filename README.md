@@ -30,7 +30,7 @@ node seed.js
 node server.js
 ```
 
-## Create Socket.io connection
+## ⚡ Create Socket.io connection
 Install on your client-side (web) application the module [socket.io-client](https://www.npmjs.com/package/socket.io-client).
 ```
 npm install socket.io-client
