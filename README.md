@@ -41,7 +41,7 @@ Then create a connection with the following code:
 // with ES6 import
 import io from 'socket.io-client';
  
-const socket = io('http://localhost');
+const socket = io('http://localhost:3005');
 ```
 
 For more info you can read the official Socket.io documentation:
