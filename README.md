@@ -30,6 +30,25 @@ node seed.js
 node server.js
 ```
 
+## Create Socket.io connection
+Install on your client-side (web) application the module [socket.io-client](https://www.npmjs.com/package/socket.io-client).
+```
+npm install socket.io-client
+```
+
+Then create a connection with the following code:
+```javascript
+// with ES6 import
+import io from 'socket.io-client';
+ 
+const socket = io('http://localhost');
+```
+
+For more info you can read the official Socket.io documentation:
+- [Official docs](https://socket.io/docs/)
+- [Server API](https://socket.io/docs/server-api/)
+- [Client API](https://socket.io/docs/client-api/)
+
 
 ## 🚀 Endpoints
 The following endpoints are available
