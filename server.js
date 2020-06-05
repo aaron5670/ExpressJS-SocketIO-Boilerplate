@@ -2,6 +2,7 @@
 const express = require('express');
 const app = express();
 const http = require('http');
+const cors = require('cors');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -14,6 +15,14 @@ let httpServer;
 /**
  * Configure middleware
  */
+app.use(cors({
+    // origin: 'http://localhost:3000',
+    origin: function(origin, callback){
+        return callback(null, true)
+    },
+    optionsSuccessStatus: 200,
+    credentials: true
+}));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(session({
