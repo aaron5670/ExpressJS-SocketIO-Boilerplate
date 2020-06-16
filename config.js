@@ -51,8 +51,8 @@ const SWAGGER_SETTINGS = {
     enableSwaggerUI: true,
     swaggerDefinition: {
         info: {
-            description: 'Express.js & Socket.io server',
-            title: 'Express.js endpoint API documentation.',
+            title: 'Express.js & Socket.io server',
+            description: 'Express.js endpoint API documentation.',
             version: '1.0.0',
         },
         basePath: '/',
