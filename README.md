@@ -54,7 +54,7 @@ For more info you can read the official Socket.io documentation:
 ## 📓 How to document the Swagger UI endpoint API
 ```javascript
 /**
- * @typedef ResponseAuthenticatedRouteJSON
+ * @typedef ResponseJSON
  * @property {string} username - user's username - eg: janet
  * @property {string} message - message - eg: This is a authenticated route!
  */
@@ -62,7 +62,7 @@ For more info you can read the official Socket.io documentation:
  * Dashboard endpoint only allowed for authenticated users
  * @route GET /api/v1/auth/dashboard
  * @group Auth
- * @returns {ResponseAuthenticatedRouteJSON.model} 200
+ * @returns {ResponseJSON.model} 200
  * @produces application/json
  */
 router.get('/dashboard', authenticationMiddleware(), (req, res) => {
