@@ -16,21 +16,23 @@ let httpServer;
 /**
  * Configure middleware
  */
-app.use(cors({
-    // origin: 'http://localhost:3000',
-    origin: function (origin, callback) {
-        return callback(null, true)
-    },
-    optionsSuccessStatus: 200,
-    credentials: true
-}));
-app.use(cookieParser());
-app.use(bodyParser.json());
-app.use(session({
-    saveUninitialized: true,
-    secret: srvConfig.SESSION_SECRET,
-    resave: true
-}));
+app.use(
+    cors({
+        // origin: `http://localhost:${srvConfig.SERVER_PORT}`,
+        origin: function (origin, callback) {
+            return callback(null, true)
+        },
+        optionsSuccessStatus: 200,
+        credentials: true
+    }),
+    session({
+        saveUninitialized: true,
+        secret: srvConfig.SESSION_SECRET,
+        resave: true
+    }),
+    cookieParser(),
+    bodyParser.json()
+);
 
 /**
  * Include all API Routes
