@@ -72,6 +72,12 @@ router.get('/dashboard', authenticationMiddleware(), (req, res) => {
     });
 });
 ```
+If you are running this boilerplate on you localhost you can see the Swagger UI documentation on: http://localhost:3005/api-docs/.
+
+**Note:** *Check if your port number is the same as your [configuration](https://github.com/aaron5670/ExpressJS-SocketIO-Boilerplate/blob/master/config.js)*.
+
+### 📌 Swagger UI example
+<img src="https://github.com/aaron5670/ExpressJS-SocketIO-Boilerplate/blob/master/swaggerExample.jpg?raw=true" alt="Swagger UI Docs" width="500"/>
 
 ## 🚀 Endpoints
 The following endpoints are available
