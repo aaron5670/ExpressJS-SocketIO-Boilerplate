@@ -10,8 +10,10 @@ Simple Express.js & Socket.io Boilerplate.
   - Login endpoint
   - Register endpoint
   - Username availability check endpoint
+  - Authenticated endpoint
   - Logout endpoint
 - [x] Socket.io integration for real-time, bidirectional and event-based communication.
+- [x] Generates automatically API docs based on Express existing routes with Swagger UI.
 - [ ] Social login / register integration.
 
 
@@ -49,6 +51,27 @@ For more info you can read the official Socket.io documentation:
 - [Server API](https://socket.io/docs/server-api/)
 - [Client API](https://socket.io/docs/client-api/)
 
+## 📓 How to document the Swagger UI endpoint API
+```javascript
+/**
+ * @typedef ResponseAuthenticatedRouteJSON
+ * @property {string} username - user's username - eg: janet
+ * @property {string} message - message - eg: This is a authenticated route!
+ */
+/**
+ * Dashboard endpoint only allowed for authenticated users
+ * @route GET /api/v1/auth/dashboard
+ * @group Auth
+ * @returns {ResponseAuthenticatedRouteJSON.model} 200
+ * @produces application/json
+ */
+router.get('/dashboard', authenticationMiddleware(), (req, res) => {
+    return res.json({
+        username: req.session.passport.user.username,
+        message: 'This is a authenticated route!'
+    });
+});
+```
 
 ## 🚀 Endpoints
 The following endpoints are available
