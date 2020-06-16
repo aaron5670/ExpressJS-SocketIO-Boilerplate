@@ -6,6 +6,7 @@ const cors = require('cors');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const expressSwagger = require('express-swagger-generator')(app);
 const srvConfig = require('./config');
 const mongoose = require('mongoose');
 const {CONNECTION_TYPE, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_PORT, DB_NAME, DB_QUERY_PARAMS} = srvConfig;
@@ -17,7 +18,7 @@ let httpServer;
  */
 app.use(cors({
     // origin: 'http://localhost:3000',
-    origin: function(origin, callback){
+    origin: function (origin, callback) {
         return callback(null, true)
     },
     optionsSuccessStatus: 200,
@@ -35,6 +36,12 @@ app.use(session({
  * Include all API Routes
  */
 app.use('/api', require('./routes/api'));
+
+/**
+ * Swagger UI documentation
+ */
+if (srvConfig.SWAGGER_SETTINGS.enableSwaggerUI)
+    expressSwagger(srvConfig.SWAGGER_SETTINGS);
 
 /**
  * Configure http(s)Server

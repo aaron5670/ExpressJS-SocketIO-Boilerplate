@@ -34,9 +34,36 @@ const DB_QUERY_PARAMS = "";
  * CA_PATH is the path where the chain.pem file is located
  */
 const HTTPS_ENABLED = false;
-const PRIVATE_KEY_PATH = '/opt/psa/var/modules/letsencrypt/etc/live/your-domain-name.com/privkey.pem';
-const CERTIFICATE_PATH = '/opt/psa/var/modules/letsencrypt/etc/live/your-domain-name.com/cert.pem';
-const CA_PATH = '/opt/psa/var/modules/letsencrypt/etc/live/your-domain-name.com/chain.pem';
+const PRIVATE_KEY_PATH = '/opt/psa/var/modules/letsencrypt/etc/live/YOUR-DOMAIN-NAME.com/privkey.pem';
+const CERTIFICATE_PATH = '/opt/psa/var/modules/letsencrypt/etc/live/YOUR-DOMAIN-NAME.com/cert.pem';
+const CA_PATH = '/opt/psa/var/modules/letsencrypt/etc/live/YOUR-DOMAIN-NAME.com/chain.pem';
+
+/**
+ * Swagger UI settings
+ * ------------------------
+ * Swagger UI is a collection of HTML, Javascript, and CSS assets
+ * that dynamically generate beautiful documentation from a Swagger-compliant API.
+ *
+ * You can visit the Swagger API documentation on /api-docs
+ * Example: http://localhost:3005/api-docs/
+ */
+const SWAGGER_SETTINGS = {
+    enableSwaggerUI: true,
+    swaggerDefinition: {
+        info: {
+            description: 'Express.js & Socket.io server',
+            title: 'Express.js endpoint API documentation.',
+            version: '1.0.0',
+        },
+        basePath: '/',
+        produces: [
+            "application/json"
+        ],
+        schemes: ['http', 'https'],
+    },
+    basedir: __dirname, //app absolute path
+    files: ['./routes/**/*.js'] //Path to the API handle folder
+};
 
 module.exports = {
     SERVER_PORT,
@@ -51,5 +78,6 @@ module.exports = {
     HTTPS_ENABLED,
     PRIVATE_KEY_PATH,
     CERTIFICATE_PATH,
-    CA_PATH
+    CA_PATH,
+    SWAGGER_SETTINGS
 };

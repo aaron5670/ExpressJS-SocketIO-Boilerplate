@@ -41,18 +41,107 @@ passport.deserializeUser(function (user, done) {
     done(null, user);
 });
 
-authRouter.post('/login',
-    passport.authenticate('local', {
-        successFlash: 'Successful login, welcome!',
-        failureFlash: true,
-        successRedirect: 'success-url',
-        failureRedirect: 'login-failed',
-    })
-);
 
 /**
- * Username availability check
- * ToDo: Create a middleware for this section (if possible)
+ * @typedef ReqUsernameJSON
+ * @property {string} username.required - user's username - eg: john
+ * @property {string} password.required - user's password - eg: password123
+ */
+/**
+ * @typedef ResponseSuccessLoginJSON
+ * @property {string} name - user's name - eg: John Doe
+ * @property {string} username - user's username - eg: john
+ */
+/**
+ * @route POST /api/v1/auth/login
+ * @group Auth - Authentication routes
+ * @param {ReqUsernameJSON.model} body.body.required - User's authentication info
+ * @returns {ResponseSuccessLoginJSON.model} 200 - An array of name of the user and username
+ * @returns {string} 401 - Username and/or password is incorrect.
+ * @produces application/json
+ * @consumes application/json
+ */
+authRouter.post('/login', function (req, res, next) {
+    passport.authenticate('local', function (err, user, info) {
+        if (err) return next(err);
+
+        if (!user) {
+            return res.status(401).json({ message: 'Username and/or password is incorrect.' });
+        }
+        req.logIn(user, function (err) {
+            if (err) return next(err);
+
+            return res.json({
+                name: req.session.passport.user.name,
+                username: req.session.passport.user.username,
+            });
+        });
+    })(req, res, next);
+});
+
+
+/**
+ * @typedef ReqRegisterJSON
+ * @property {string} name.required - user's name - eg: Janet Doe
+ * @property {string} username.required - user's username - eg: janet
+ * @property {string} password.required - user's password - eg: securepassword92
+ */
+/**
+ * @typedef ResponseSuccessRegisterJSON
+ * @property {boolean} success
+ * @property {string} message - success message string - eg: User is successfully registered!
+ */
+/**
+ * @route POST /api/v1/auth/register
+ * @group Auth
+ * @param {ReqRegisterJSON.model} body.body.required - Information about the user.
+ * @returns {ResponseSuccessRegisterJSON.model} 201 - User account successfully created.
+ * @returns {Object} 303 - Username already exist!
+ * @returns {Object} 409 - All fields are required!
+ * @produces application/json
+ * @consumes application/json
+ */
+authRouter.post('/register', async (req, res) => {
+    let {name, username, password} = req.body;
+
+    if (!name || !username || !password) return res.status(409).json({
+        success: false,
+        message: 'All fields are required!'
+    });
+
+    await Users.findOne({username: username}, async function (err, user) {
+        if (err) return res.json({success: false, error: true});
+        if (user) return res.status(303).json({success: false, message: 'Username already exist!'});
+
+        const salt = bcrypt.genSaltSync(10);
+        const newUser = new Users({
+            name: name,
+            username: username,
+            password: bcrypt.hashSync(password, salt)
+        });
+
+        await newUser.save(function (err) {
+            if (err) return console.error(err);
+        });
+
+        return res.status(201).json({
+            success: true,
+            message: 'User is successfully registered!'
+        });
+    });
+});
+
+
+/**
+ * @typedef ResponseUsernameAvailabilityJSON
+ * @property {boolean} usernameAvailable
+ */
+/**
+ * @route GET /api/v1/auth/username-availability
+ * @group Auth
+ * @param {string} username.query.required - the username you want to check for availability - example: john
+ * @returns {ResponseUsernameAvailabilityJSON.model} 200 - Availability of a username
+ * @produces application/json
  */
 authRouter.get('/username-availability', async (req, res) => {
     let username = req.query.username;
@@ -67,58 +156,42 @@ authRouter.get('/username-availability', async (req, res) => {
             });
 
             return res.json({
-                usernameAlreadyInUsage: (!!user),
+                usernameAvailable: (!user),
             });
         }
     );
-
 });
 
-authRouter.post('/register', async (req, res) => {
-    let {name, username, password} = req.body;
-
-    if (!name || !username || !password) return res.json({
-        success: false,
-        message: 'All fields are required!'
-    });
-
-    await Users.findOne({username: username}, async function (err, user) {
-        if (err) return res.json({success: false, error: true});
-        if (user) return res.json({success: false, message: 'Username already exist!'});
-
-        const salt = bcrypt.genSaltSync(10);
-        const newUser = new Users({
-            name: name,
-            username: username,
-            password: bcrypt.hashSync(password, salt)
-        });
-
-        await newUser.save(function (err) {
-            if (err) return console.error(err);
-        });
-
-        return res.json({
-            success: true,
-            message: 'User is successfully registered!'
-        });
-    });
-});
-
-authRouter.get('/success-url', authenticationMiddleware(), (req, res) => {
+/**
+ * @typedef ResponseAuthenticatedRouteJSON
+ * @property {string} username - user's username - eg: janet
+ * @property {string} message - message - eg: This is a authenticated route!
+ */
+/**
+ * Dashboard endpoint only allowed for authenticated users
+ * @route GET /api/v1/auth/dashboard
+ * @group Auth
+ * @returns {ResponseAuthenticatedRouteJSON.model} 200
+ * @produces application/json
+ */
+authRouter.get('/dashboard', authenticationMiddleware(), (req, res) => {
     return res.json({
-        success: true,
         username: req.session.passport.user.username,
-        message: req.flash('success')[0]
+        message: 'This is a authenticated route!'
     });
 });
 
-authRouter.get('/login-failed', (req, res) => {
-    res.status(401).json({
-        success: false,
-        message: req.flash('error')[0]
-    });
-});
 
+/**
+ * @typedef ResponseSuccessLogoutJSON
+ * @property {boolean} success
+ */
+/**
+ * @route GET /api/v1/auth/logout
+ * @group Auth
+ * @returns {ResponseSuccessLogoutJSON.model} 200 - Logout successfully
+ * @produces application/json
+ */
 authRouter.get('/logout', function (req, res) {
     req.logout();
     res.json({
