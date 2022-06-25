@@ -17,7 +17,7 @@
     "express": "^4.16.3",
     "express-session": "^1.17.1",
     "mongoose": "^5.7.12",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.7",
     "passport": "latest",
     "passport-local": "latest",
     "socket.io": "^2.3.0"
