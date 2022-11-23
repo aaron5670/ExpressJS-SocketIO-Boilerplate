@@ -20,7 +20,7 @@
     "node-fetch": "^2.6.1",
     "passport": "latest",
     "passport-local": "latest",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.5.0"
   },
   "devDependencies": {
     "express-swagger-generator": "^1.1.17"
