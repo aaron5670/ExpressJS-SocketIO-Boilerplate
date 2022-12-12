@@ -14,7 +14,7 @@
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "express-session": "^1.17.1",
     "mongoose": "^5.7.12",
     "node-fetch": "^2.6.1",
