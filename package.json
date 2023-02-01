@@ -16,7 +16,7 @@
     "cors": "^2.8.5",
     "express": "^4.16.3",
     "express-session": "^1.17.1",
-    "mongoose": "^5.7.12",
+    "mongoose": "^5.13.15",
     "node-fetch": "^2.6.1",
     "passport": "latest",
     "passport-local": "latest",
